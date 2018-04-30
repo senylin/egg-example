@@ -4,17 +4,26 @@ const Controller = require('egg').Controller;
 
 class UserController extends Controller {
   async index() { // GET
-    this.ctx.body = await this.ctx.model.User.find({});
+    const { ctx } = this;
+    let res = '';
+    const user = await this.service.user.findUser(ctx.query);
+    res = user;
+    console.log(user)
+    if(user){
+      ctx.helper.success({ ctx, res });
+    } else {
+      ctx.helper.error({ ctx,res })
+    }
   }
   async new() { // GET /new
-    this.ctx.body = await this.ctx.model.User.findOne({ userName: '123' }, (err, data) => {
-      if (err) {
-        console.log(err);
-      }
-      if (data) {
-        console.log(data);
-      }
-    });
+    const { ctx } = this;
+    let res = '';
+    console.log('success');
+    if(user){
+      ctx.helper.success({ ctx, res });
+    } else {
+      ctx.helper.error({ ctx,res })
+    }
   }
   async show() { // GET /:id
     this.ctx.body = await this.ctx.model.User.findById(this.ctx.req.query.id);
@@ -31,13 +40,21 @@ class UserController extends Controller {
     });
   }
   async create() { // POST
-    const user = new this.ctx.model.User({
-      userName: '123',
-      password: '1234',
-    });
-    await user.save(err => {
-      if (err) console.log(err);
-    });
+    const { ctx } = this;
+    let res = '';
+    const exist = await this.service.user.findUser({userName:ctx.request.body.username})
+    console.log(exist)
+    if(exist){
+      res = 'userName_exist';
+      const message = '用户名已存在';
+      ctx.helper.error({ ctx, res, message })
+    }
+    else {
+      const user = await this.service.user.createUser(ctx.request.body);
+      res = 'create_success';
+      const message = '用户创建成功';
+      ctx.helper.success({ ctx, res, message })
+    }
   }
   async destroy() { // /:id
     this.ctx.model.User.findByIdAndRemove(this.ctx.req.query.id, (err, data) => {

@@ -4,6 +4,16 @@ const Service = require('egg').Service;
 
 class TaskService extends Service {
     async findTask(query) {
+        query.taskName = query.taskName ? query.taskName : '';
+        const reg = new RegExp("^.*"+query.taskName+".*$");
+        const task = await this.ctx.model.Task.find({
+            taskType: query.taskType ? query.taskType :new RegExp("^.*.*$"),
+            taskStatus: query.taskStatus ?  query.taskStatus :new RegExp("^.*.*$"),
+            taskName: {$regex: reg}
+        });
+        return task;
+    }
+    async findTaskList(query) {
         const task = await this.ctx.model.Task.findOne(query);
         return task;
     }
@@ -19,12 +29,13 @@ class TaskService extends Service {
             taskPublic: params.taskPublic,
             taskPriority: params.taskPriority,
             taskResult: '',
-            taskImg: ''
+            taskImg: '',
+            taskStatus: 'doing'
         })
         return this.ctx.model.Task.create(task);
     }
     async updateTask(params) {
-        const update = await this.ctx.model.Task.findOne({ id:params.id});
+        const update = await this.ctx.model.Task.findOne({ _id:params._id });
         update.taskName = params.taskName;
         update.taskType = params.taskType;
         update.taskBefore = params.taskBefore;
@@ -34,6 +45,7 @@ class TaskService extends Service {
         update.taskWarn = params.taskWarn;
         update.taskPublic = params.taskPublic;
         update.taskPriority = params.taskPriority;
+        update.taskStatus = params.taskStatus;
         const task = this.ctx.model.Task.create(update);
         return task;
     }

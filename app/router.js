@@ -11,5 +11,7 @@ module.exports = app => {
   router.get('/', controller.home.index);
   // router.get('/news', controller.news.list);
   router.resources('user', '/api/user', controller.user);
+  router.resources('task', '/api/task', controller.task);
+  router.resources('plan', '/api/plan', controller.plan);
   io.of('/').route('chat', controller.chat.index);
 };

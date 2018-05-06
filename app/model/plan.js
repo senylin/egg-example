@@ -2,7 +2,7 @@
 
 module.exports = app => {
   const mongoose = app.mongoose;
-  const TaskSchema = new mongoose.Schema({
+  const PlanSchema = new mongoose.Schema({
     taskName: { type: String },
     taskType: { type: String },
     taskStatus: { type: String },
@@ -14,8 +14,13 @@ module.exports = app => {
     taskPublic: { type: String },
     taskPriority: { type: String },
     taskResult: { type: String },
-    taskImg: { type: String }
+    taskImg: { type: String },
+    planDate: { type: String },
+    planHour: { type: String },
+    planStatus: { type: String },
+    planTask: { type: String },
+    userId: { type: String }
   });
 
-  return mongoose.model('Task', TaskSchema);
+  return mongoose.model('Plan', PlanSchema);
 };

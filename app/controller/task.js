@@ -35,10 +35,17 @@ class TaskController extends Controller {
   async create() { // POST
     const { ctx } = this;
     let res = '';
-    const task = await this.service.task.createTask(ctx.request.body);
-    res = 1;
-    const message = '任务创建成功';
-    ctx.helper.success({ ctx, res, message })
+    // console.log(ctx.request.body)
+    if (ctx.request.body.taskName === '') {
+      res = 0;
+      const message = '任务创建失败';
+      ctx.helper.error({ ctx, res, message })
+    } else {
+      const task = await this.service.task.createTask(ctx.request.body);
+      res = 1;
+      const message = '任务创建成功';
+      ctx.helper.success({ ctx, res, message })
+    }
   }
   async destroy() { // /:id
     const { ctx } = this;

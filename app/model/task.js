@@ -14,7 +14,10 @@ module.exports = app => {
     taskPublic: { type: String },
     taskPriority: { type: String },
     taskResult: { type: String },
-    taskImg: { type: String }
+    taskImg: { type: String },
+    finishTime: { type: String },
+    finishGood: { type: Number },
+    userId: { type: String }
   });
 
   return mongoose.model('Task', TaskSchema);

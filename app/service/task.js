@@ -6,11 +6,15 @@ class TaskService extends Service {
     async findTask(query) {
         query.taskName = query.taskName ? query.taskName : '';
         const reg = new RegExp("^.*"+query.taskName+".*$");
+        const sort = {};
+        if (query.sort) {
+            sort = query.sort
+        }
         const task = await this.ctx.model.Task.find({
             taskType: query.taskType ? query.taskType :new RegExp("^.*.*$"),
             taskStatus: query.taskStatus ?  query.taskStatus :new RegExp("^.*.*$"),
             taskName: {$regex: reg}
-        });
+        }).sort({finishTime: -1});
         return task;
     }
     async findTaskList(query) {
@@ -30,6 +34,8 @@ class TaskService extends Service {
             taskPriority: params.taskPriority,
             taskResult: '',
             taskImg: '',
+            finishTime: '',
+            finishGood: 0,
             taskStatus: 'doing'
         })
         return this.ctx.model.Task.create(task);
@@ -46,6 +52,9 @@ class TaskService extends Service {
         update.taskPublic = params.taskPublic;
         update.taskPriority = params.taskPriority;
         update.taskStatus = params.taskStatus;
+        update.taskResult = params.taskResult;
+        update.finishGood = params.finishGood;
+        update.finishTime = params.finishTime;
         const task = this.ctx.model.Task.create(update);
         return task;
     }

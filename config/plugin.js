@@ -26,3 +26,8 @@ exports.cors = {
   enable: true,
   package: 'egg-cors',
 };
+
+exports.oauth2Server = {
+  enable: true,
+  package: 'egg-oauth2-server',
+};

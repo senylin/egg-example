@@ -19,7 +19,8 @@ module.exports = app => {
     planHour: { type: String },
     planStatus: { type: String },
     planTask: { type: String },
-    userId: { type: String }
+    userId: { type: String },
+    byUserId: { type: String },
   });
 
   return mongoose.model('Plan', PlanSchema);

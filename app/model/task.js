@@ -17,7 +17,8 @@ module.exports = app => {
     taskImg: { type: String },
     finishTime: { type: String },
     finishGood: { type: Number },
-    userId: { type: String }
+    userId: { type: String },
+    byUserId: { type: String },
   });
 
   return mongoose.model('Task', TaskSchema);

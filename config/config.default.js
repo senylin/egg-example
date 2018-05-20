@@ -46,7 +46,10 @@ module.exports = appInfo => {
     methodnoallow: {
       enable: false,
     },
-    domainWhiteList: [ 'localhost:8100' ],
+    domainWhiteList: [ '*:8100' ],
+  };
+  config.cors = {
+    origin: () => '*',
   };
   config.oauth2Server = {
     grants: [ 'password' ],

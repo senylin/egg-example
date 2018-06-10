@@ -4,9 +4,10 @@ const Service = require('egg').Service;
 
 class UserService extends Service {
   async findUsers(query) {
+      console.log(query.userName)
     const user = await this.ctx.model.User.find({
-      userName: query.userName ? query.userName : new RegExp('^.*.*$'),
-      email: query.email ? new RegExp('^.*' + query.email + '*$') : new RegExp('^.*.*$'),
+      userName: query.userName ? new RegExp('^.*' + query.userName + '.*$') : '',
+      email: query.email ? new RegExp('^.*' + query.email + '.*$') : new RegExp('^.*.*$'),
     });
     return user;
   }
@@ -20,7 +21,7 @@ class UserService extends Service {
       password: params.password,
       phoneNumber: params.phoneNumber,
       role: [],
-      email: params.email
+      email: params.email,
     });
     return this.ctx.model.User.create(user);
   }

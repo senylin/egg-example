@@ -23,8 +23,10 @@ class ContactService extends Service {
   async createContact(params) {
     const contact = new this.ctx.model.Contact({
       contactId: params.contactId,
+      contact: params.contact,
       contactName: params.contactName,
       contactedId: params.contactedId,
+      contacted: params.contacted,
       contactedName: params.contactedName,
       contactedStatus: 'contact',
       contactTime: new Date(new Date().getTime()+8*60*60*1000).toISOString().substr(0,10),
